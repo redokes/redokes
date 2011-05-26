@@ -58,7 +58,7 @@ Ext.onReady(function(){
     
     
     //Handle name change
-    Ext.get('update-name').on('click', function(){
+    Ext.get('name').on('keyup', function(){
     	var data = {
         	name: Ext.get('name').dom.value
         };
@@ -70,15 +70,28 @@ Ext.onReady(function(){
 });
 
 function makeUserBubble(client){
-	var html = client.sessionId;
+	var name = client.sessionId;
 	if(client.data.name != null){
-		html = client.data.name + " " + client.sessionId;
+		name = client.data.name;
 	}
-	Ext.core.DomHelper.append(Ext.getBody(), {
+	
+	//Create the bubble container
+	var bubble = Ext.get(Ext.core.DomHelper.append(Ext.getBody(), {
 		id: client.sessionId,
-		cls: 'client-bubble',
-		html: html
+		cls: 'user-bubble',
+	}));
+	
+	//Add the name
+	Ext.core.DomHelper.append(bubble, {
+		cls: 'name',
+		html: name
 	});
+	
+	//Add the text
+	Ext.core.DomHelper.append(bubble, {
+		cls: 'text',
+	});
+	
 };
 
 function removeUserBubble(client){
@@ -87,6 +100,6 @@ function removeUserBubble(client){
 };
 
 function updateUserBubble(client){
-	Ext.get(client.sessionId).update(client.data.name + " " + client.sessionId);
+	Ext.get(client.sessionId).select('.name').update(client.data.name);
 }
 
