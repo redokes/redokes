@@ -29,7 +29,7 @@ Ext.onReady(function(){
     });
  
     socket.on('message', function(data){
-    	console.log(data);
+    	//console.log(data);
     	//handle when a user connects
 		if(data.type == "connection"){
 			var client = data.data.client;
@@ -111,7 +111,7 @@ function makeUserBubble(client){
 };
 
 function removeUserBubble(client){
-	console.log(client);
+	//console.log(client);
 	Ext.get(client.sessionId).remove();
 };
 
