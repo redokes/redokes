@@ -1,4 +1,4 @@
-var client = Ext.create('Redokes.Socket.Client', {
+var client = Ext.create('Redokes.socket.Client', {
 	server:'wes',
 	port:8080
 });
