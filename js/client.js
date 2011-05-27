@@ -1,6 +1,6 @@
 // make a connection to the server
-//var serverUrl = "redokes.com";
-var serverUrl = "jared";
+var serverUrl = "redokes.com";
+//var serverUrl = "jared";
 
 //Modules and actions used by the client
 var Modules = {

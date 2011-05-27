@@ -1,6 +1,6 @@
 <?php 
-//$serverUrl = "redokes.com";
-$serverUrl = "jared";
+$serverUrl = "redokes.com";
+//$serverUrl = "jared";
 ?>
 <!DOCTYPE html>
 <html>
