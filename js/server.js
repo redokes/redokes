@@ -78,6 +78,7 @@ socket.on('connection', function(client){
 				//Update the clients data
 				if(action == Actions.Update){
 					clients[client.sessionId].data = request.data;
+					console.log(clients[client.sessionId]);
 				}
 			break;
 			

@@ -75,7 +75,7 @@ Ext.onReady(function(){
 				if(action == Actions.Init){
 					var clients = request.data.clients;
 					for(var sessionId in clients){
-						makeUserBubble(sessionId, clients[sessionId]);
+						makeUserBubble(sessionId, clients[sessionId].data);
 					}
 				}
 			break;
