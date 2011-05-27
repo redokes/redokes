@@ -1,28 +1,27 @@
 var client = Ext.create('Redokes.socket.Client', {
 	server:'wes',
-	port:8080,
-	messageHandler:messageHandler
+	port:8080
 });
 
 var messageHandler = Ext.create('Redokes.socket.MessageHandler', {
 	module:'client',
 	actions:{
 		test: function(request) {
-			console.log(request);
+			
 		},
 		
 		connect: function(request) {
-			console.log('connection function');
+			
 			makeUserBubble(request.session, request.data);
 		},
 		
 		disconnect: function(request) {
-			console.log('disconnect function');
+			
 			removeUserBubble(request.session);
 		},
 		
 		update: function(request) {
-			console.log('update function');
+			
 			updateUserBubble(request.session, request.data);
 		}
 		
@@ -33,7 +32,6 @@ var serverMessageHandler = Ext.create('Redokes.socket.MessageHandler', {
 	module:'server',
 	actions:{
 		init: function(request) {
-			console.log('server init');
 			var clients = request.data.clients;
 			for(var sessionId in clients){
 				makeUserBubble(sessionId, clients[sessionId].data);
