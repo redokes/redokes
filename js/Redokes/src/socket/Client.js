@@ -25,7 +25,6 @@ Ext.define('Redokes.socket.Client', {
         this.addEvents('connect', 'message', 'disconnect');
 		this.initSocket();
 		this.initListeners();
-		console.log('this is the new shit');
         return this;
     },
     
