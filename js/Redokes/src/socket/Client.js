@@ -1,4 +1,3 @@
-/*
 var Modules = {
 	Server: "server",
 	Client: "client"
@@ -10,7 +9,6 @@ var Actions = {
 	Disconnect: "disconnect",
 	Update: "update"
 };
-*/
 //Ext.define({String} className, {Object} members, {Function} onClassCreated);
 Ext.define('Redokes.socket.Client', {
 	extend: 'Ext.util.Observable',
