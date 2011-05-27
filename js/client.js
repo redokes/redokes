@@ -157,7 +157,11 @@ function makeUserBubble(session, data){
 };
 
 function removeUserBubble(session){
-	Ext.get(session).remove(true);
+	Ext.get(session).fadeOut({
+		endOpacity: 0,
+		duration: 500,
+		remove: true
+	});
 };
 
 function updateUserBubble(session, data){
