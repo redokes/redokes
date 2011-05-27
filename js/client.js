@@ -1,6 +1,6 @@
 // make a connection to the server
-//var serverUrl = "redokes.com";
-var serverUrl = "jared";
+var serverUrl = "redokes.com";
+//var serverUrl = "jared";
 
 //Modules and actions used by the client
 var Modules = {
@@ -75,7 +75,7 @@ Ext.onReady(function(){
 				if(action == Actions.Init){
 					var clients = request.data.clients;
 					for(var sessionId in clients){
-						makeUserBubble(sessionId, clients[sessionId]);
+						makeUserBubble(sessionId, clients[sessionId].data);
 					}
 				}
 			break;
@@ -98,7 +98,7 @@ Ext.onReady(function(){
     		Actions.Update,
     		clientData
     	);
-    }, this, { buffer: 500 });
+    });
     
     //Handle message change
     Ext.get('message').on('keyup', function(){
@@ -108,7 +108,7 @@ Ext.onReady(function(){
     		Actions.Update,
     		clientData
     	);
-    }, this, { buffer: 500 });
+    });
     
     
     function send(module, action, data){
