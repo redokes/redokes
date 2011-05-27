@@ -9,6 +9,8 @@
   <script src="js/client.js"></script> 
 </head>
 <body>
-	Name: <input id="name" type="text" /> <span id="update-name">Update</span>
+	<div class="user-toolbar">
+		Name: <input id="name" type="text" /> Message: <input id="message" type="text" />
+	</div>
 </body>
 </html>

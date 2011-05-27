@@ -11,13 +11,16 @@ Ext.onReady(function(){
     //Connect this client to the server
     socket.connect();
     
+    //Client Data
+    var clientData = {
+    	name: Ext.get("name").dom.value,
+    	message: Ext.get("message").dom.value
+    };
+    
     socket.on('connect', function(){
-        var data = {
-        	name: "Test"
-        };
         socket.send({
         	type: "update",
-        	data: data
+        	data: clientData
         });
     });
  
@@ -59,14 +62,22 @@ Ext.onReady(function(){
     
     //Handle name change
     Ext.get('name').on('keyup', function(){
-    	var data = {
-        	name: Ext.get('name').dom.value
-        };
+    	clientData.name = Ext.get('name').dom.value;
         socket.send({
         	type: "update",
-        	data: data
+        	data: clientData
         });
-    });
+    }, this, { buffer: 500 });
+    
+    //Handle message change
+    Ext.get('message').on('keyup', function(){
+    	clientData.message = Ext.get('message').dom.value;
+        socket.send({
+        	type: "update",
+        	data: clientData
+        });
+    }, this, { buffer: 500 });
+    
 });
 
 function makeUserBubble(client){
@@ -79,7 +90,11 @@ function makeUserBubble(client){
 	var bubble = Ext.get(Ext.core.DomHelper.append(Ext.getBody(), {
 		id: client.sessionId,
 		cls: 'user-bubble',
+		style:{
+			display: "none"
+		}
 	}));
+	bubble.show(true);
 	
 	//Add the name
 	Ext.core.DomHelper.append(bubble, {
@@ -87,9 +102,10 @@ function makeUserBubble(client){
 		html: name
 	});
 	
-	//Add the text
+	//Add the message
 	Ext.core.DomHelper.append(bubble, {
-		cls: 'text'
+		cls: 'message',
+		html: client.data.message
 	});
 	
 };
@@ -101,5 +117,6 @@ function removeUserBubble(client){
 
 function updateUserBubble(client){
 	Ext.get(client.sessionId).select('.name').update(client.data.name);
+	Ext.get(client.sessionId).select('.message').update(client.data.message);
 }
 

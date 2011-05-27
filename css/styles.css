@@ -1,8 +1,32 @@
+body, html{
+	padding: 0px;
+	margin: 0px;
+	font-family: Arial;
+	font-size: 12px;
+	background-color: #F7F7F7;	
+}
+
+.user-toolbar{
+	background: #b5bdc8; /* Old browsers */
+	background: -moz-linear-gradient(top, #b5bdc8 0%, #828c95 36%, #28343b 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b5bdc8), color-stop(36%,#828c95), color-stop(100%,#28343b)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #b5bdc8 0%,#828c95 36%,#28343b 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #b5bdc8 0%,#828c95 36%,#28343b 100%); /* Opera11.10+ */
+	background: -ms-linear-gradient(top, #b5bdc8 0%,#828c95 36%,#28343b 100%); /* IE10+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b5bdc8', endColorstr='#28343b',GradientType=0 ); /* IE6-9 */
+	background: linear-gradient(top, #b5bdc8 0%,#828c95 36%,#28343b 100%); /* W3C */
+	padding: 5px;
+	color: white;
+	font-weight: bold;
+}
+
 .user-bubble{
+	float: left;
+	display: inline;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
-	border: 1px solid #dddddd;
+	border: 1px solid #d8d8d8;
 	background-color: #eeeeee;
 	padding: 10px;
 	margin: 10px;
@@ -10,6 +34,12 @@
 }
 
 .user-bubble .name{
-	padding-left: 5px;
-	border-bottom: 1px solid black;	
+	border-bottom: 1px solid black;
+	padding: 3px 0px 3px 0px;
+	font-weight: bold;
+}
+
+.user-bubble .message{
+	padding: 10px;
+	font-style: italic;	
 }
