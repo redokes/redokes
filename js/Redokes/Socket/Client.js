@@ -29,7 +29,7 @@ Redokes.Socket.Client = Ext.extend(Ext.util.Observable, {
 	
 	initListeners: function() {
 		if (this.socket) {
-			this.socket.on('connect', function(){
+			this.socket.on('connect', Ext.Function.bind(function(){
 				this.fireEvent('connect', arguments);
 				
 				this.send(
@@ -38,19 +38,19 @@ Redokes.Socket.Client = Ext.extend(Ext.util.Observable, {
 					this.data
 				);
 				
-			}.createDelegate(this));
+			}, this));
 			
-			this.socket.on('message', function(request){
+			this.socket.on('message', Ext.Function.bind(function(request){
 				var params = {
 					module:request.module,
 					action:request.action
 				};
 				this.fireEvent('message', params);
-			}.createDelegate(this));
+			}, this));
 			
-			this.socket.on('disconnect', function(client){
+			this.socket.on('disconnect', Ext.Function.bind(function(client){
 				this.fireEvent('disconnect', arguments);
-			}.createDelegate(this));
+			}, this));
 		}
 	},
 	
