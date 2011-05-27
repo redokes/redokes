@@ -24,5 +24,6 @@ $serverUrl = "jared";
 	<div class="user-toolbar">
 		Name: <input id="name" type="text" /> Message: <input id="message" type="text" />
 	</div>
+	<div class="user-bubble"></div>
 </body>
 </html>
