@@ -1,8 +1,8 @@
-var ExtPath = '/js/ext';
+var ExtPath = '/js/ext/src';
 var RedokesPath = '/js/Redokes/src';
 if (Ext.Loader.config.enabled) {
-	Ext.Loader.setPath('Ext', '/js/ext/src');
-	Ext.Loader.setPath('Redokes', '/js/Redokes/src');
+	Ext.Loader.setPath('Ext', ExtPath);
+	Ext.Loader.setPath('Redokes', RedokesPath);
 }
 else {
 	Ext.Loader.setConfig({
