@@ -19,6 +19,7 @@ Ext.define('Redokes.socket.Client', {
 		timeout: 3000,
 		data:{}
 	},
+	messageHandlers: [],
 	
 	constructor: function(config) {
         this.initConfig(config);
@@ -57,12 +58,23 @@ Ext.define('Redokes.socket.Client', {
 					action:request.action
 				};
 				this.fireEvent('message', params);
+				
+				if (this.messageHandlers[request.module]) {
+					this.messageHandlers[request.module].callAction(request.action, request);
+				}
+				
+				//If messageHandlers[module] route to that
+				
 			}, this));
 			
 			this.socket.on('disconnect', Ext.Function.bind(function(client){
 				this.fireEvent('disconnect', arguments);
 			}, this));
 		}
+	},
+	
+	registerMessageHandler: function(handler){
+		this.messageHandlers[handler.module] = handler;
 	},
 	
 	send: function(module, action, data) {
