@@ -81,6 +81,11 @@ Ext.onReady(function(){
 });
 
 function makeUserBubble(client){
+	//make sure this bubble doesnt already exist
+	if(Ext.get(client.sessionId) != null){
+		return false;
+	}
+	
 	var name = client.sessionId;
 	if(client.data.name != null){
 		name = client.data.name;
