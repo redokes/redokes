@@ -6,7 +6,7 @@ var http = require('http'), // HTTP server
 server = http.createServer(function(req, res){
     res.writeHead(200, {'Content-Type': 'text/html'});
     // read index.html and send it to the client
-    var output = fs.readFileSync('./index.html', 'utf8');
+    var output = fs.readFileSync('./index.php', 'utf8');
     res.end(output);
 });
 // run on port 8080

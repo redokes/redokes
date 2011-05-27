@@ -1,6 +1,6 @@
 // make a connection to the server
 Ext.onReady(function(){
-    var socket = new io.Socket('redokes.com', {
+    var socket = new io.Socket('http://redokes.com', {
         port:8080,
         connectTimeout:3000
      });
@@ -89,7 +89,7 @@ function makeUserBubble(client){
 	
 	//Add the text
 	Ext.core.DomHelper.append(bubble, {
-		cls: 'text',
+		cls: 'text'
 	});
 	
 };
