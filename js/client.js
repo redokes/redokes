@@ -98,7 +98,7 @@ Ext.onReady(function(){
     		Actions.Update,
     		clientData
     	);
-    }, this, { buffer: 500 });
+    });
     
     //Handle message change
     Ext.get('message').on('keyup', function(){
@@ -108,7 +108,7 @@ Ext.onReady(function(){
     		Actions.Update,
     		clientData
     	);
-    }, this, { buffer: 500 });
+    });
     
     
     function send(module, action, data){
