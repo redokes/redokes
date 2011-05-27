@@ -1,6 +1,6 @@
 // make a connection to the server
 Ext.onReady(function(){
-    var socket = new io.Socket('jared', {
+    var socket = new io.Socket('redokes.com', {
         port:8080,
         connectTimeout:3000
      });
