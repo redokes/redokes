@@ -27,6 +27,7 @@ Ext.define('Redokes.socket.Client', {
         this.addEvents('connect', 'message', 'disconnect');
 		this.initSocket();
 		this.initListeners();
+		console.log('this is the new shit');
         return this;
     },
     
@@ -42,7 +43,7 @@ Ext.define('Redokes.socket.Client', {
 	
 	initListeners: function() {
 		if (this.socket) {
-			this.socket.on('connect', function(){
+			this.socket.on('connect', Ext.Function.bind(function(){
 				this.fireEvent('connect', arguments);
 				
 				this.send(
@@ -51,19 +52,19 @@ Ext.define('Redokes.socket.Client', {
 					this.data
 				);
 				
-			}.createDelegate(this));
+			}, this));
 			
-			this.socket.on('message', function(request){
+			this.socket.on('message', Ext.Function.bind(function(request){
 				var params = {
 					module:request.module,
 					action:request.action
 				};
 				this.fireEvent('message', params);
-			}.createDelegate(this));
+			}, this));
 			
-			this.socket.on('disconnect', function(client){
+			this.socket.on('disconnect', Ext.Function.bind(function(client){
 				this.fireEvent('disconnect', arguments);
-			}.createDelegate(this));
+			}, this));
 		}
 	},
 	
