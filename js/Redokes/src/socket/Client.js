@@ -19,7 +19,7 @@ Ext.define('Redokes.socket.Client', {
 		timeout: 3000,
 		data:{}
 	},
-	messageHandlers: [],
+	handlers: [],
 	
 	constructor: function(config) {
         this.initConfig(config);
@@ -30,13 +30,11 @@ Ext.define('Redokes.socket.Client', {
     },
     
     initSocket: function() {
-		if (this.server) {
-			this.socket = new io.Socket(this.url, {
-				port:this.port,
-				connectTimeout: this.timeout
-			});
-			this.socket.connect();
-		}
+		this.socket = new io.Socket(this.url, {
+			port:this.port,
+			connectTimeout: this.timeout
+		});
+		this.socket.connect();
 	},
 	
 	initListeners: function() {
@@ -59,11 +57,9 @@ Ext.define('Redokes.socket.Client', {
 				};
 				this.fireEvent('message', params);
 				
-				if (this.messageHandlers[request.module]) {
-					this.messageHandlers[request.module].callAction(request.action, request);
+				if (this.handlers[request.module]) {
+					this.handlers[request.module].callAction(request.action, request);
 				}
-				
-				//If messageHandlers[module] route to that
 				
 			}, this));
 			
@@ -73,8 +69,8 @@ Ext.define('Redokes.socket.Client', {
 		}
 	},
 	
-	registerMessageHandler: function(handler){
-		this.messageHandlers[handler.module] = handler;
+	registerHandler: function(handler){
+		this.handlers[handler.module] = handler;
 	},
 	
 	send: function(module, action, data) {
