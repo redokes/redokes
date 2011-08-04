@@ -1,0 +1,10 @@
+@mixin shadow($horizontal, $vertical, $blur, $spread, $color){
+	-webkit-box-shadow: $horizontal $vertical $blur $spread $color;
+	-moz-box-shadow: $horizontal $vertical $blur $spread $color;
+	box-shadow: $horizontal $vertical $blur $spread $color;
+}
+@mixin shadow-inset($horizontal, $vertical, $blur, $spread, $color){
+	-webkit-box-shadow: inset $horizontal $vertical $blur $spread $color;
+	-moz-box-shadow: inset $horizontal $vertical $blur $spread $color;
+	box-shadow: inset $horizontal $vertical $blur $spread $color;
+}

@@ -23,24 +23,28 @@ body, html{
 }
 
 .user-bubble{
-	float: left;
-	display: inline;
 	@include border-radius(5px); //border-radius
 	border: 1px solid $base;
 	background-color: $light;
 	padding: 10px;
 	margin: 10px;
-	width: 200px;
-	
+
 	.name{
 		border-bottom: 1px solid black;
 		padding: 3px 0px 3px 0px;
 		font-weight: bold;
 	}
 	
-	.message{
+	.message-container{
 		padding: 10px;
 		font-style: italic;	
+	}
+	
+	.message{
+		margin-top: 5px;
+		padding: 5px;
+		border: 1px solid darken($base, 10);
+		background-color: lighten($base, 10);
 	}
 
 }

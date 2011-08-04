@@ -11,13 +11,23 @@ Ext.define('RedokesClient', {
 	},
 	
 	constructor: function(config) {
-        this.initConfig(config);
-        this.initClient();
-        this.initClientHandler();
-        this.initServerHandler();
-        this.initUI();
+		if(config.data != null){
+			Ext.apply(config.data, this.config.data);
+		}
+		this.initConfig(config);
+		this.init();
         return this;
     },
+	
+	init: function(){
+		
+		this.addEvents('init');
+		
+        this.initClient();
+        this.initHandlers();
+        this.initUI();
+		this.client.connect();
+	},
     
     initClient: function(){
     	this.client = Ext.create('Redokes.socket.Client', {
@@ -26,41 +36,62 @@ Ext.define('RedokesClient', {
 			port:8080
 		});
     },
+	
+	initHandlers: function(){
+		this.initClientHandler();
+        this.initServerHandler();
+		this.initUserHandler();
+	},
     
     initClientHandler: function(){
-    	this.clientHandler = Ext.create('Redokes.socket.MessageHandler', {
+    	this.clientHandler = Ext.create('Redokes.socket.Handler', {
 			module:'client',
+			scope: this,
 			actions:{
-				connect: Ext.bind(function(request) {
+				connect: function(request) {
 					this.makeUserBubble(request.session, request.data);
-				}, this),
-
-				disconnect: Ext.bind(function(request) {
+				},
+				disconnect: function(request) {
 					this.removeUserBubble(request.session);
-				}, this),
-
-				update: Ext.bind(function(request) {
-					this.updateUserBubble(request.session, request.data);
-				}, this)
+				}
 			}
 		});
     	this.client.registerHandler(this.clientHandler);
     },
     
     initServerHandler: function(){
-    	this.serverHandler = Ext.create('Redokes.socket.MessageHandler', {
+    	this.serverHandler = Ext.create('Redokes.socket.Handler', {
 			module:'server',
+			scope: this,
 			actions:{
-				init: Ext.bind(function(request) {
+				init: function(request) {
 					var clients = request.data.clients;
 					for(var sessionId in clients){
 						this.makeUserBubble(sessionId, clients[sessionId].data);
 					}
-				}, this)
+					
+					this.fireEvent('init');
+				}
 			}
 		});
     	this.client.registerHandler(this.serverHandler);
     },
+	
+	initUserHandler: function(){
+		this.userHandler = Ext.create('Redokes.socket.Handler', {
+			module:'user',
+			scope: this,
+			actions:{
+				update: function(request){
+					this.updateUserBubble(request.session, request.data);
+				},
+				message: function(request){
+					this.addMessage(request.session, request.data);
+				}
+			}
+		});
+    	this.client.registerHandler(this.userHandler);
+	},
     
     initUI: function(){
     	this.nameField = Ext.create('Ext.form.field.Text', {
@@ -71,7 +102,7 @@ Ext.define('RedokesClient', {
     	this.nameField.on('keyup', function(){
     		this.data.name = this.nameField.getValue();
     		this.client.send(
-				'client',
+				'user',
 				'update',
 				this.data
 			);
@@ -79,20 +110,37 @@ Ext.define('RedokesClient', {
     	this.messageField = Ext.create('Ext.form.field.Text', {
     		fieldLabel: 'Message',
 	    	labelWidth: 50,
-	    	enableKeyEvents: true
+	    	enableKeyEvents: true,
+			listeners: {
+				scope: this,
+                specialkey: function(field, e){
+                    // e.HOME, e.END, e.PAGE_UP, e.PAGE_DOWN,
+                    // e.TAB, e.ESC, arrow keys: e.LEFT, e.RIGHT, e.UP, e.DOWN
+                    if (e.getKey() == e.ENTER) {
+                        this.client.send(
+							'user',
+							'message',
+							{
+								message: this.messageField.getValue()
+							}
+						);
+						this.messageField.setValue('');
+                    }
+                }
+            }
     	});
-    	this.messageField.on('keyup', function(){
-    		this.data.message = this.messageField.getValue();
-    		this.client.send(
-				'client',
-				'update',
-				this.data
-			);
-    	}, this);
     	this.toolbar = Ext.create('Ext.toolbar.Toolbar', {
     	    renderTo: document.body,
     	    items: [this.nameField, this.messageField]
     	});
+		
+		this.on('init', function(){
+			this.client.send(
+				'user',
+				'update',
+				this.data
+			);
+		}, this);
     },
     
     makeUserBubble: function(session, data){
@@ -124,8 +172,7 @@ Ext.define('RedokesClient', {
 
 		//Add the message
 		Ext.core.DomHelper.append(bubble, {
-			cls: 'message',
-			html: data.message
+			cls: 'message-container'
 		});
 
 	},
@@ -143,123 +190,15 @@ Ext.define('RedokesClient', {
 	},
 
 	updateUserBubble: function(session, data){
-		Ext.get(session).select('.name').update(data.name);
-		Ext.get(session).select('.message').update(data.message);
+		Ext.get(session).down('.name').update(data.name);
+	},
+	
+	addMessage: function(session, data){
+		Ext.core.DomHelper.append(Ext.get(session).down('.message-container'), {
+			tag: 'div',
+			cls: 'message',
+			html: data.message
+		});
 	}
     
 });
-
-/*
-var client = Ext.create('Redokes.socket.Client', {
-			server:'<?php echo $serverUrl; ?>',
-			port:8080
-		});
-
-		var messageHandler = Ext.create('Redokes.socket.MessageHandler', {
-			module:'client',
-			actions:{
-				test: function(request) {
-				},
-
-				connect: function(request) {
-					makeUserBubble(request.session, request.data);
-				},
-
-				disconnect: function(request) {
-					removeUserBubble(request.session);
-				},
-
-				update: function(request) {
-					updateUserBubble(request.session, request.data);
-				}
-
-			}
-		});
-
-		var serverMessageHandler = Ext.create('Redokes.socket.MessageHandler', {
-			module:'server',
-			actions:{
-				init: function(request) {
-					var clients = request.data.clients;
-					for(var sessionId in clients){
-						makeUserBubble(sessionId, clients[sessionId].data);
-					}
-				}
-			}
-		});
-
-		client.registerMessageHandler(messageHandler);
-		client.registerMessageHandler(serverMessageHandler);
-
-		var clientData = {
-			name: Ext.get("name").dom.value,
-			message: Ext.get("message").dom.value
-		};
-
-		 Ext.get('name').on('keyup', function(){
-			clientData.name = Ext.get('name').dom.value;
-			client.send(
-				'client',
-				'update',
-				clientData
-			);
-		});
-
-		//Handle message change
-		Ext.get('message').on('keyup', function(){
-			clientData.message = Ext.get('message').dom.value;
-			client.send(
-				'client',
-				'update',
-				clientData
-			);
-		});
-
-		function makeUserBubble(session, data){
-			//make sure this bubble doesnt already exist
-			if(Ext.get(session) != null){
-				return false;
-			}
-
-			var name = session;
-			if(data.name != null){
-				name = data.name;
-			}
-
-			//Create the bubble container
-			var bubble = Ext.get(Ext.core.DomHelper.append(Ext.getBody(), {
-				id: session,
-				cls: 'user-bubble',
-				style:{
-					display: "none"
-				}
-			}));
-			bubble.show(true);
-
-			//Add the name
-			Ext.core.DomHelper.append(bubble, {
-				cls: 'name',
-				html: name
-			});
-
-			//Add the message
-			Ext.core.DomHelper.append(bubble, {
-				cls: 'message',
-				html: data.message
-			});
-
-		};
-
-		function removeUserBubble(session){
-			Ext.get(session).fadeOut({
-				endOpacity: 0,
-				duration: 500,
-				remove: true
-			});
-		};
-
-		function updateUserBubble(session, data){
-			Ext.get(session).select('.name').update(data.name);
-			Ext.get(session).select('.message').update(data.message);
-		}
-*/

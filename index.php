@@ -1,6 +1,7 @@
 <?php 
-$serverUrl = "redokes.com";
-//$serverUrl = "jared";
+//$serverUrl = "redokes.com";
+$serverUrl = "jared";
+session_start();
 ?>
 <!DOCTYPE html>
 <html>
@@ -16,11 +17,15 @@ $serverUrl = "redokes.com";
 <script type="text/javascript">
 	Ext.onReady(function(){
 		var client = new RedokesClient({
-			url: '<?php echo $serverUrl; ?>'
+			url: '<?php echo $serverUrl; ?>',
+			data:{
+				applicationSessionId: '<?php echo session_id(); ?>'
+			}
 		});
 	});  
 </script> 
 </head>
 <body>
+	<?php echo session_id(); ?>
 </body>
 </html>
