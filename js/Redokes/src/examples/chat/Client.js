@@ -1,13 +1,18 @@
-Ext.define('RedokesClient', {
+Ext.define('Redokes.examples.chat.Client', {
+	extend: 'Redokes.socket.client.Client',
+	
+	//Config
+	url: '',
+	post: 8080
+});
+/*
+Ext.define('Redokes.examples.chat.Client', {
 	extend: 'Ext.util.Observable',
 	config:{
 		url: '',
 		port:8080,
 		timeout: 3000,
-		data: {
-			name: "some randy",
-			message: "Who am i?"
-		}
+		data: {}
 	},
 	
 	constructor: function(config) {
@@ -20,9 +25,6 @@ Ext.define('RedokesClient', {
     },
 	
 	init: function(){
-		
-		this.addEvents('init');
-		
         this.initClient();
         this.initHandlers();
         this.initUI();
@@ -69,8 +71,6 @@ Ext.define('RedokesClient', {
 					for(var sessionId in clients){
 						this.makeUserBubble(sessionId, clients[sessionId].data);
 					}
-					
-					this.fireEvent('init');
 				}
 			}
 		});
@@ -83,6 +83,7 @@ Ext.define('RedokesClient', {
 			scope: this,
 			actions:{
 				update: function(request){
+					console.log('user update');
 					this.updateUserBubble(request.session, request.data);
 				},
 				message: function(request){
@@ -100,11 +101,12 @@ Ext.define('RedokesClient', {
 	    	enableKeyEvents: true
     	});
     	this.nameField.on('keyup', function(){
-    		this.data.name = this.nameField.getValue();
     		this.client.send(
 				'user',
 				'update',
-				this.data
+				{
+					name: this.nameField.getValue()
+				}
 			);
     	}, this);
     	this.messageField = Ext.create('Ext.form.field.Text', {
@@ -134,11 +136,13 @@ Ext.define('RedokesClient', {
     	    items: [this.nameField, this.messageField]
     	});
 		
-		this.on('init', function(){
+		this.client.on('connect', function(){
 			this.client.send(
 				'user',
 				'update',
-				this.data
+				{
+					name: 'New User'
+				}
 			);
 		}, this);
     },
@@ -147,11 +151,6 @@ Ext.define('RedokesClient', {
 		//make sure this bubble doesnt already exist
 		if(Ext.get(session) != null){
 			return false;
-		}
-
-		var name = session;
-		if(data.name != null){
-			name = data.name;
 		}
 
 		//Create the bubble container
@@ -167,7 +166,7 @@ Ext.define('RedokesClient', {
 		//Add the name
 		Ext.core.DomHelper.append(bubble, {
 			cls: 'name',
-			html: name
+			html: 'New User'
 		});
 
 		//Add the message
@@ -202,3 +201,4 @@ Ext.define('RedokesClient', {
 	}
     
 });
+*/

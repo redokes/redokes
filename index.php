@@ -13,19 +13,14 @@ session_start();
 <script src="http://<?php echo $serverUrl?>:8080/socket.io/socket.io.js"></script> 
 <script src="/js/ext/ext-all.js"></script>
 <script src="/js/Redokes/bootstrap.js"></script>
-<script src="/js/RedokesClient.js"></script>
 <script type="text/javascript">
 	Ext.onReady(function(){
-		var client = new RedokesClient({
-			url: '<?php echo $serverUrl; ?>',
-			data:{
-				applicationSessionId: '<?php echo session_id(); ?>'
-			}
+		var chat = Ext.create('Redokes.examples.chat.Chat', {
+			url: '<?php echo $serverUrl; ?>'
 		});
 	});  
 </script> 
 </head>
 <body>
-	<?php echo session_id(); ?>
 </body>
 </html>

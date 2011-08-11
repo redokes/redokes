@@ -11,8 +11,7 @@ var Actions = {
 };
 
 
-//Ext.define({String} className, {Object} members, {Function} onClassCreated);
-Ext.define('Redokes.socket.Client', {
+Ext.define('Redokes.socket.client.Client', {
 	extend: 'Ext.util.Observable',
 	config:{
 		url: '',
@@ -21,9 +20,10 @@ Ext.define('Redokes.socket.Client', {
 		timeout: 3000,
 		data:{}
 	},
-	handlers: [],
+	handlers: {},
 	
 	constructor: function(config) {
+		this.handlers = {};
         this.initConfig(config);
         this.addEvents('connect', 'message', 'disconnect');
 		this.initSocket();
@@ -46,13 +46,6 @@ Ext.define('Redokes.socket.Client', {
 		if (this.socket) {
 			this.socket.on('connect', Ext.Function.bind(function(){
 				this.fireEvent('connect', arguments);
-				
-				this.send(
-					Modules.Client,
-					Actions.Update,
-					this.data
-				);
-				
 			}, this));
 			
 			this.socket.on('message', Ext.Function.bind(function(request){
@@ -63,7 +56,10 @@ Ext.define('Redokes.socket.Client', {
 				this.fireEvent('message', params);
 				
 				if (this.handlers[request.module]) {
-					this.handlers[request.module].callAction(request.action, request);
+					//Loop through and run all actions
+					Ext.each(this.handlers[request.module], function(handler){
+						handler.callAction(request.action, request);
+					}, this);
 				}
 				
 			}, this));
@@ -75,7 +71,10 @@ Ext.define('Redokes.socket.Client', {
 	},
 	
 	registerHandler: function(handler){
-		this.handlers[handler.module] = handler;
+		if(this.handlers[handler.module] == null){
+			this.handlers[handler.module] = [];
+		}
+		this.handlers[handler.module].push(handler);
 	},
 	
 	send: function(module, action, data) {
