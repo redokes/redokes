@@ -5,6 +5,10 @@ body, html {
   font-size: 12px;
   background-color: #F7F7F7; }
 
+.clear {
+  clear: both;
+  line-height: 1px; }
+
 .user-toolbar {
   padding: 5px;
   color: white;
@@ -23,6 +27,36 @@ body, html {
   /* IE10+ */
   background: linear-gradient(top, #5e5e5e 0%, #2b2b2b 100%);
   /* W3C */ }
+
+.user-wrap, .message-wrap {
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border: 1px solid #d0d0d0;
+  background-color: #eaeaea;
+  padding: 5px;
+  margin: 5px; }
+
+.user-wrap .name {
+  float: left; }
+.user-wrap .info {
+  float: right;
+  margin-right: 10px;
+  font-style: italic; }
+
+.message-wrap:nth-child(2n+1) {
+  background-color: #c5d0d7;
+  border-color: #a7b8c2; }
+
+.message-wrap {
+  margin: 10px; }
+  .message-wrap .name {
+    font-weight: bold; }
+  .message-wrap .message {
+    padding: 5px 0px 0px 10px; }
+
+.message-footer {
+  background-color: #eaeaea; }
 
 .user-bubble {
   border-radius: 5px;

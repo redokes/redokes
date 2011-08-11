@@ -34,17 +34,19 @@ Ext.define('Redokes.examples.chat.Chat', {
 	
 	initCenter: function(){
 		this.center = new Ext.panel.Panel({
-			title: 'Center',
-			region: 'center'
+			title: 'Messages',
+			region: 'center',
+			autoScroll: true
 		});
 		this.items.push(this.center);
 	},
 	
 	initWest: function(){
 		this.west = new Ext.panel.Panel({
-			title: 'West',
+			title: 'Connected Users',
 			region: 'west',
-			width: 250
+			width: 250,
+			autoScroll: true
 		});
 		this.items.push(this.west);
 	},

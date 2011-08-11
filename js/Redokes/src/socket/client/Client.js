@@ -1,40 +1,60 @@
-var Modules = {
-	Server: "server",
-	Client: "client"
-};
-
-var Actions = {
-	Init: "init",
-	Connect: "connect",
-	Disconnect: "disconnect",
-	Update: "update"
-};
-
-
 Ext.define('Redokes.socket.client.Client', {
 	extend: 'Ext.util.Observable',
+	
 	config:{
+		/**
+		 * @cfg {String} url
+		 * The url of the node server
+		 */
 		url: '',
-		server:false,
-		port:8080,
-		timeout: 3000,
-		data:{}
+		
+		/**
+		 * @cfg {Numeric} port
+		 * The port that the node server is running on
+		 */
+		port: 8080,
+		
+		/**
+		 * @cfg {Numeric} timeout
+		 * Time in milliseconds before the connection to the server will timeout
+		 */
+		timeout: 3000
 	},
+	
+	/**
+	 * @private {Object} handlers
+	 * An object of handlers to use with this client
+	 */
 	handlers: {},
 	
+	/**
+     * @private
+     * Constructor that inits all the needed events, listeners and the socket
+     */
 	constructor: function(config) {
 		this.handlers = {};
         this.initConfig(config);
-        this.addEvents('connect', 'message', 'disconnect');
+        this.addEvents(
+			'connect',
+			'message',
+			'disconnect'
+		);
 		this.initSocket();
 		this.initListeners();
         return this;
     },
 	
+	/**
+     * Attempts to connect the socket
+     */
 	connect: function(){
 		this.socket.connect();
 	},
     
+	
+	/**
+     * Creates the socket
+     */
     initSocket: function() {
 		this.socket = new io.Socket(this.url, {
 			port:this.port,
@@ -42,6 +62,9 @@ Ext.define('Redokes.socket.client.Client', {
 		});
 	},
 	
+	/**
+     * Adds listeners to the socket and chains those to local events/handlers
+     */
 	initListeners: function() {
 		if (this.socket) {
 			this.socket.on('connect', Ext.Function.bind(function(){
@@ -70,6 +93,10 @@ Ext.define('Redokes.socket.client.Client', {
 		}
 	},
 	
+	/**
+     * Registers a new handler for this client
+	 * @param {Redokes.socket.client.Handler} handler
+     */
 	registerHandler: function(handler){
 		if(this.handlers[handler.module] == null){
 			this.handlers[handler.module] = [];
@@ -77,6 +104,9 @@ Ext.define('Redokes.socket.client.Client', {
 		this.handlers[handler.module].push(handler);
 	},
 	
+	/**
+     * Sends a message to the socket
+     */
 	send: function(module, action, data) {
 		this.socket.send({
     		module: module,

@@ -15,11 +15,54 @@ body, html{
 	background-color: #F7F7F7;	
 }
 
+.clear{
+	clear: both;
+	line-height: 1px;
+}
+
 .user-toolbar{
 	padding: 5px;
 	color: white;
 	font-weight: bold;
 	@include background-gradient($dark, darken($dark, 20%));
+}
+
+.user-wrap, .message-wrap{
+	@include border-radius(5px); //border-radius
+	border: 1px solid darken($base, 5);
+	background-color: $light;
+	padding: 5px;
+	margin: 5px;
+}
+
+.user-wrap{
+	.name{
+		float: left;
+	}
+	.info{
+		float: right;
+		margin-right: 10px;
+		font-style: italic;
+	}
+}
+
+.message-wrap:nth-child(2n+1) {
+  background-color: #c5d0d7;
+	border-color: darken(#c5d0d7, 10);
+}
+
+.message-wrap{
+	margin: 10px;
+	.name{
+		font-weight: bold;
+	}
+	.message{
+		padding: 5px 0px 0px 10px;
+	}
+}
+
+.message-footer{
+	background-color: $light;
 }
 
 .user-bubble{
